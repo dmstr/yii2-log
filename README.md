@@ -27,5 +27,13 @@ Usage
 
 Once the extension is installed, simply use it in your code by  :
 
-```php
-<?= \dmstr\log\AutoloadExample::widget(); ?>```
+        'log'	=> [
+            'targets'	=> [
+                [
+                    'class'		=> 'dmstr\log\SyslogTarget',
+                    'levels'	=> ['error', 'warning', 'info', 'trace'],
+                    'enabled'	=> true,
+                    'logVars'	=> ['_GET','_POST'],
+                ],
+            ],
+        ],
