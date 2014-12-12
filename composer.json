@@ -1,0 +1,21 @@
+{
+    "name": "dmstr/yii2-log",
+    "description": "SyslogTarget writes log to syslog.",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension","log","target"],
+    "license": "BSD-4-Clause",
+    "authors": [
+        {
+            "name": "Marc Mautz",
+            "email": "marc@diemeisterei.de"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "dmstr\\log\\": ""
+        }
+    }
+}
