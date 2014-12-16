@@ -11,6 +11,8 @@ namespace dmstr\log;
 
 use Yii;
 use yii\helpers\VarDumper;
+use \yii\log\Target;
+use \yii\log\Logger;
 
 /**
  * SyslogTarget writes log to syslog.
