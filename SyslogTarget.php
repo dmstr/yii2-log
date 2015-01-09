@@ -11,8 +11,8 @@ namespace dmstr\log;
 
 use Yii;
 use yii\helpers\VarDumper;
-use \yii\log\Target;
-use \yii\log\Logger;
+use yii\log\Logger;
+use yii\log\Target;
 
 /**
  * SyslogTarget writes log to syslog.
@@ -36,12 +36,12 @@ class SyslogTarget extends Target
      * @var array syslog levels
      */
     private $_syslogLevels = [
-        Logger::LEVEL_TRACE => LOG_DEBUG,
+        Logger::LEVEL_TRACE         => LOG_DEBUG,
         Logger::LEVEL_PROFILE_BEGIN => LOG_DEBUG,
-        Logger::LEVEL_PROFILE_END => LOG_DEBUG,
-        Logger::LEVEL_INFO => LOG_INFO,
-        Logger::LEVEL_WARNING => LOG_WARNING,
-        Logger::LEVEL_ERROR => LOG_ERR,
+        Logger::LEVEL_PROFILE_END   => LOG_DEBUG,
+        Logger::LEVEL_INFO          => LOG_INFO,
+        Logger::LEVEL_WARNING       => LOG_WARNING,
+        Logger::LEVEL_ERROR         => LOG_ERR,
     ];
 
 
@@ -50,12 +50,24 @@ class SyslogTarget extends Target
      */
     public function export()
     {
-        openlog($this->identity, LOG_ODELAY | LOG_PID, $this->facility);
-        foreach ($this->messages as $message) {
-            syslog($this->_syslogLevels[$message[1]], $this->formatMessage($message));
-            error_log($this->formatMessage($message));
+        error_log(__METHOD__ . ' via error_log() ===');
+        error_log("\n--- begin ---");
+        $block = '';
+        foreach ($this->messages as $i => $message) {
+            $block .= $msg = $this->formatMessage($message);
+            // flush if log amount exceeds limit (eg. 2048 for nginx, including "PHP message: " per call)
+            if (strlen($block) > 1500) {
+                error_log("\n--- end chunk ---");
+                flush();
+                error_log("\n--- begin chunk ---");
+                $block = '';
+            } else {
+
+            }
+            error_log($msg);
         }
-        closelog();
+        error_log("\n--- end ---");
+        flush();
     }
 
     /**
